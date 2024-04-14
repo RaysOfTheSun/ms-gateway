@@ -1,0 +1,60 @@
+version: "3.5"
+services:
+  gateway:
+    image: "ms-gateway:1.0.0"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=dockerized,blue"
+    ports:
+      - "8080:8080"
+    depends_on:
+      eureka:
+        condition: "service_healthy"
+  downstream-next:
+    image: "ms-downstream:1.0.0"
+    expose:
+      - "8081"
+    ports:
+      - "8082:8081"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=dockerized,green"
+    depends_on:
+      eureka:
+        condition: "service_healthy"
+  downstream-curr:
+    image: "ms-downstream:1.0.0"
+    expose:
+      - "8081"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=dockerized,blue"
+    depends_on:
+      eureka:
+        condition: "service_healthy"
+  downstream2-curr:
+    image: "ms-downstream:1.0.0"
+    expose:
+      - "8081"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=dockerized,blue,downstream2-blue"
+    depends_on:
+      eureka:
+        condition: "service_healthy"
+  downstream2-next:
+      image: "ms-downstream:1.0.0"
+      expose:
+        - "8081"
+      environment:
+        - "SPRING_PROFILES_ACTIVE=dockerized,green,downstream2-blue"
+      depends_on:
+        eureka:
+          condition: "service_healthy"
+  eureka:
+    image: "ms-eureka-server:1.0.0"
+    expose:
+      - "8761"
+    ports:
+      - "8761:8761"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://eureka:8761"]
+      interval: 10s
+      timeout: 5s
+      retries: 5

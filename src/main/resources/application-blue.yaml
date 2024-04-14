@@ -1,0 +1,9 @@
+spring:
+  cloud:
+    openfeign:
+      client:
+        config:
+          helloWorld:
+            url: http://downstream-curr:8081/hello
+          downstream-next:
+            url: http://downstream-next:8081/hello

@@ -1,0 +1,14 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+spring:
+  cloud:
+    openfeign:
+      client:
+        config:
+          helloWorld:
+            url: http://localhost:8081/hello
+integration:
+  serviceNames:
+    downstream1: "downstream2"

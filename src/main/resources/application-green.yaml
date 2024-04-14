@@ -1,0 +1,7 @@
+spring:
+  cloud:
+    openfeign:
+      client:
+        config:
+          helloWorld:
+            url: http://downstream:8081/hello
